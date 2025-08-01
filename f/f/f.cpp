@@ -1,20 +1,71 @@
-﻿// f.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
+﻿#include <iostream>
+#include <math.h>
+#include <string>
+#include <vector>
+using namespace std;
 
-#include <iostream>
-
-int main()
-{
-    std::cout << "Hello World!\n";
+using ll = long long;
+void write(vector<int> v) {
+	cout << endl;
+	for (int i = 0; i < v.size(); ++i) {
+		cout << " - " << v[i];
+	}
 }
 
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
+vector<int> pr(int x) {
+	vector<char> prime(x + 1, true);
+	prime[0] = prime[1] = 0;
+	for (int i = 2; i <= x; ++i) {
+		if (prime[i] && i * 1ll * i <= x) {
+			for (int j = i * i; j <= x; j += i) {
+				prime[j] = 0;
+			}
+		}
+	}
+	vector<int> del;
+	for (int z = 0; z <= x; ++z) {
+		if (prime[z] && x % z == 0) del.push_back(z);
+	}
+	vector<int> res;
+	int l = 0;
+	while (x > 1) {
+		if (x % del[l] == 0) {
+			res.push_back(del[l]);
+			x /= del[l];
+		}
+		else ++l;
+	}
+	return res;
+}
+int c(vector<int> s, vector<int> b) {
+	int iter = 0;
+	for (int i = 0; i < s.size(); ++i) {
+		for (int j = 0; j < b.size(); ++j) {
+			if (s[i] == b[j]) {
+				s[i] = b[j] = 0;
+				break;
+			}
+		}
+	}
+	for (int j = 0; j < s.size(); ++j) {
+		if (s[j] != 0) {
+			++iter;
+		}
+	}
+	for (int j = 0; j < b.size(); ++j) {
+		if (b[j] != 0) {
+			++iter;
+		}
+	}
+	return iter;
+}
 
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
+int main() {
+
+	int n, m; cin >> n >> m;
+	vector<int> nv, mv;
+	nv = pr(n); mv = pr(m);
+	if (nv.size() > mv.size()) cout << c(mv, nv);
+	else cout << c(nv, mv);
+
+}
